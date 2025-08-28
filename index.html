@@ -117,51 +117,6 @@
             box-shadow: 0 5px 25px rgba(0,0,0,0.08);
         }
 
-        .insights-section {
-            background: #f8f9ff;
-            padding: 40px;
-        }
-
-        .insights-title {
-            font-size: 1.8rem;
-            color: #333;
-            margin-bottom: 30px;
-            text-align: center;
-        }
-
-        .insights-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
-        }
-
-        .insight-card {
-            background: white;
-            padding: 25px;
-            border-radius: 15px;
-            border-left: 4px solid #81D742;
-            box-shadow: 0 5px 25px rgba(0,0,0,0.08);
-        }
-
-        .insight-title {
-            font-weight: bold;
-            color: #1B3A4B;
-            margin-bottom: 10px;
-            font-size: 1.1rem;
-        }
-
-        .insight-text {
-            color: #666;
-            line-height: 1.6;
-        }
-
-        .footer {
-            background: #1B3A4B;
-            color: white;
-            padding: 30px;
-            text-align: center;
-        }
-
         .ai-section {
             background: linear-gradient(135deg, #1B3A4B 0%, #0F2834 100%);
             padding: 40px;
@@ -246,6 +201,194 @@
             font-size: 0.9rem;
         }
 
+        .insights-section {
+            background: #f8f9ff;
+            padding: 40px;
+        }
+
+        .insights-title {
+            font-size: 1.8rem;
+            color: #333;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .insights-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .insight-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            border-left: 4px solid #81D742;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+        }
+
+        .insight-title {
+            font-weight: bold;
+            color: #1B3A4B;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .insight-text {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .globe-section {
+            background: linear-gradient(135deg, #0F2834 0%, #1B3A4B 100%);
+            padding: 60px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            min-height: 500px;
+        }
+
+        .stars-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .shooting-star {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #81D742;
+            border-radius: 50%;
+            opacity: 0;
+            animation: shoot linear infinite;
+        }
+
+        .shooting-star::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            right: 0;
+            width: 300px;
+            height: 1px;
+            background: linear-gradient(to right, transparent, #81D742, transparent);
+            transform: translateY(-50%);
+        }
+
+        @keyframes shoot {
+            0% {
+                opacity: 0;
+                transform: translateX(-100px) translateY(-100px) scale(0);
+            }
+            10% {
+                opacity: 1;
+                transform: translateX(-80px) translateY(-80px) scale(1);
+            }
+            90% {
+                opacity: 1;
+                transform: translateX(calc(100vw + 80px)) translateY(calc(100vh + 80px)) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translateX(calc(100vw + 100px)) translateY(calc(100vh + 100px)) scale(0);
+            }
+        }
+
+        .star-shape {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            opacity: 0.6;
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        .star-shape::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: #81D742;
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 0.3;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.8;
+                transform: scale(1.1);
+            }
+        }
+
+        .globe-title {
+            font-size: 2rem;
+            color: white;
+            margin-bottom: 10px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .globe-subtitle {
+            font-size: 1.1rem;
+            color: #81D742;
+            margin-bottom: 40px;
+            font-weight: 600;
+            position: relative;
+            z-index: 2;
+        }
+
+        .market-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .market-stat {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(129, 215, 66, 0.3);
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .market-stat-number {
+            font-size: 2.5rem;
+            color: #81D742;
+            font-weight: 900;
+            margin-bottom: 10px;
+        }
+
+        .market-stat-label {
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .market-stat-desc {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            margin-top: 10px;
+        }
+
+        .footer {
+            background: #1B3A4B;
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
         .data-note {
             font-size: 0.9rem;
             opacity: 0.8;
@@ -270,7 +413,7 @@
                 <div class="stat-label">Growth vs Last Quarter</div>
             </div>
             <div class="stat-card">
-                <div class="stat-number">$89k</div>
+                <div class="stat-number">$127k</div>
                 <div class="stat-label">Average Salary</div>
             </div>
             <div class="stat-card">
@@ -342,10 +485,51 @@
                     <div class="insight-title">Flow Designer Demand</div>
                     <div class="insight-text">Flow Designer skills are mentioned in 52% of mid-level positions, showing the shift toward low-code automation solutions in ServiceNow implementations.</div>
                 </div>
+                <div class="insight-card">
+                    <div class="insight-title">Platform Developer Growth</div>
+                    <div class="insight-text">Application Developer (CAD) certification requests increased 38% as organizations build custom ServiceNow applications. JavaScript and scripting skills are premium.</div>
+                </div>
+                <div class="insight-card">
+                    <div class="insight-title">Security Operations Surge</div>
+                    <div class="insight-text">SecOps module expertise commands 25% salary premium as cybersecurity integration becomes critical. SOAR and threat intelligence skills highly valued.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="globe-section">
+            <div class="stars-container" id="starsContainer"></div>
+            
+            <h2 class="globe-title">GLOBAL MARKET DYNAMICS</h2>
+            <p class="globe-subtitle">Real-time visualization of ServiceNow opportunities worldwide</p>
+            
+            <div class="market-stats">
+                <div class="market-stat">
+                    <div class="market-stat-number">47%</div>
+                    <div class="market-stat-label">North America</div>
+                    <div class="market-stat-desc">Leading global demand</div>
+                </div>
+                <div class="market-stat">
+                    <div class="market-stat-number">28%</div>
+                    <div class="market-stat-label">Europe</div>
+                    <div class="market-stat-desc">Fastest growing region</div>
+                </div>
+                <div class="market-stat">
+                    <div class="market-stat-number">18%</div>
+                    <div class="market-stat-label">Asia-Pacific</div>
+                    <div class="market-stat-desc">Emerging markets</div>
+                </div>
+                <div class="market-stat">
+                    <div class="market-stat-number">$127k</div>
+                    <div class="market-stat-label">Global Average</div>
+                    <div class="market-stat-desc">ServiceNow salary</div>
+                </div>
             </div>
         </div>
 
         <div class="footer">
+            <p style="margin-bottom: 15px; font-weight: 600; color: #81D742;">
+                Built by Nicholas Pappas - ServiceNow Developer Intern at KeyBank
+            </p>
             <p class="data-note">
                 Proof-of-concept prototype with simulated data demonstrating market analysis framework. 
                 Production version would integrate with live job site APIs for real-time insights.
@@ -354,6 +538,56 @@
     </div>
 
     <script>
+        // Shooting stars animation
+        function createShootingStar() {
+            const starsContainer = document.getElementById('starsContainer');
+            const star = document.createElement('div');
+            star.className = 'shooting-star';
+            
+            // Random starting position
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            
+            // Random animation duration
+            star.style.animationDuration = (2 + Math.random() * 3) + 's';
+            
+            starsContainer.appendChild(star);
+            
+            // Remove star after animation
+            setTimeout(() => {
+                star.remove();
+            }, 5000);
+        }
+
+        // Create static star shapes
+        function createStaticStars() {
+            const starsContainer = document.getElementById('starsContainer');
+            const positions = [
+                { left: '20%', top: '30%', delay: '0s' },
+                { left: '70%', top: '20%', delay: '1s' },
+                { left: '85%', top: '60%', delay: '2s' },
+                { left: '15%', top: '70%', delay: '0.5s' },
+                { left: '50%', top: '45%', delay: '1.5s' }
+            ];
+            
+            positions.forEach(pos => {
+                const staticStar = document.createElement('div');
+                staticStar.className = 'star-shape';
+                staticStar.style.left = pos.left;
+                staticStar.style.top = pos.top;
+                staticStar.style.animationDelay = pos.delay;
+                starsContainer.appendChild(staticStar);
+            });
+        }
+
+        // Initialize animations
+        function initStarAnimations() {
+            createStaticStars();
+            
+            // Create shooting stars periodically
+            setInterval(createShootingStar, 800);
+        }
+
         // Skills demand chart
         const skillsCtx = document.getElementById('skillsChart').getContext('2d');
         const skillsChart = new Chart(skillsCtx, {
@@ -452,6 +686,9 @@
                 }
             }
         });
+
+        // Initialize when page loads
+        window.addEventListener('load', initStarAnimations);
     </script>
 </body>
 </html>
