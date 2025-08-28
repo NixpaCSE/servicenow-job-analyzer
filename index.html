@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ServiceNow Job Market Analyzer</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial Black', 'Arial', 'Helvetica', sans-serif;
+            background: linear-gradient(135deg, #1B3A4B 0%, #0F2834 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1B3A4B 0%, #0F2834 100%);
+            color: white;
+            padding: 40px;
+            text-align: left;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: -0.5px;
+            line-height: 1.1;
+        }
+
+        .title-green {
+            color: #81D742;
+        }
+
+        .title-white {
+            color: white;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 40px;
+            background: #f8f9ff;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #1B3A4B;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 1rem;
+        }
+
+        .charts-section {
+            padding: 40px;
+        }
+
+        .chart-container {
+            margin-bottom: 50px;
+        }
+
+        .chart-title {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .chart-wrapper {
+            position: relative;
+            height: 400px;
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+        }
+
+        .insights-section {
+            background: #f8f9ff;
+            padding: 40px;
+        }
+
+        .insights-title {
+            font-size: 1.8rem;
+            color: #333;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .insights-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .insight-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            border-left: 4px solid #81D742;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+        }
+
+        .insight-title {
+            font-weight: bold;
+            color: #1B3A4B;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .insight-text {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .footer {
+            background: #1B3A4B;
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .ai-section {
+            background: linear-gradient(135deg, #1B3A4B 0%, #0F2834 100%);
+            padding: 40px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ai-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at center, rgba(129, 215, 66, 0.1) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .ai-title {
+            font-size: 2rem;
+            color: white;
+            margin-bottom: 10px;
+            text-align: center;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .ai-subtitle {
+            font-size: 1.1rem;
+            color: #81D742;
+            margin-bottom: 40px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .ai-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .ai-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(129, 215, 66, 0.3);
+            padding: 30px;
+            border-radius: 15px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .ai-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(129, 215, 66, 0.2);
+        }
+
+        .ai-card-title {
+            font-size: 1.2rem;
+            color: #81D742;
+            margin-bottom: 15px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .ai-card-text {
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .ai-stat {
+            font-size: 2rem;
+            color: #81D742;
+            font-weight: 900;
+            margin-bottom: 5px;
+        }
+
+        .ai-stat-label {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+        }
+
+        .data-note {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><span class="title-green">SERVICENOW</span><br><span class="title-white">JOB MARKET ANALYZER</span></h1>
+            <p>Prototype demonstrating ServiceNow skill demand analysis framework</p>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">2,847</div>
+                <div class="stat-label">Active ServiceNow Jobs</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">34%</div>
+                <div class="stat-label">Growth vs Last Quarter</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">$89k</div>
+                <div class="stat-label">Average Salary</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">15</div>
+                <div class="stat-label">Top Skills Tracked</div>
+            </div>
+        </div>
+
+        <div class="charts-section">
+            <div class="chart-container">
+                <h2 class="chart-title">Most In-Demand ServiceNow Skills</h2>
+                <div class="chart-wrapper">
+                    <canvas id="skillsChart"></canvas>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <h2 class="chart-title">Certification Demand Over Time</h2>
+                <div class="chart-wrapper">
+                    <canvas id="trendsChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="ai-section">
+            <h2 class="ai-title">AI TRANSFORMATION INSIGHTS</h2>
+            <p class="ai-subtitle">The Future of ServiceNow is AI-Powered</p>
+            
+            <div class="ai-cards">
+                <div class="ai-card">
+                    <div class="ai-card-title">Now Assist Explosion</div>
+                    <div class="ai-stat">156%</div>
+                    <div class="ai-stat-label">Increase in Now Assist job mentions</div>
+                    <div class="ai-card-text">Organizations are rapidly adopting conversational AI to transform user experiences. Now Assist skills are becoming essential for modern ServiceNow implementations.</div>
+                </div>
+                
+                <div class="ai-card">
+                    <div class="ai-card-title">AI Agent Builder Demand</div>
+                    <div class="ai-stat">23%</div>
+                    <div class="ai-stat-label">Of senior roles require AI Agent skills</div>
+                    <div class="ai-card-text">Companies seek professionals who can design and implement intelligent automation agents that autonomously handle complex business processes.</div>
+                </div>
+                
+                <div class="ai-card">
+                    <div class="ai-card-title">AI-First Implementations</div>
+                    <div class="ai-stat">89%</div>
+                    <div class="ai-stat-label">Growth in AI-powered workflow requests</div>
+                    <div class="ai-card-text">The shift toward AI-native ServiceNow deployments is accelerating, with intelligent workflows becoming the new standard for enterprise automation.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="insights-section">
+            <h2 class="insights-title">Key Market Insights</h2>
+            <div class="insights-grid">
+                <div class="insight-card">
+                    <div class="insight-title">HRSD is Exploding</div>
+                    <div class="insight-text">HR Service Delivery job postings increased 67% this quarter, making it the fastest-growing ServiceNow specialization. Companies are prioritizing employee experience automation.</div>
+                </div>
+                <div class="insight-card">
+                    <div class="insight-title">Admin Skills Still King</div>
+                    <div class="insight-text">System Administrator (CSA) remains the most requested certification across all job levels, appearing in 78% of ServiceNow postings. Foundation skills never go out of style.</div>
+                </div>
+                <div class="insight-card">
+                    <div class="insight-title">Integration Hub Rising</div>
+                    <div class="insight-text">Integration Hub mentions jumped 45% as companies focus on connecting ServiceNow with their existing tech stack. API knowledge is becoming essential.</div>
+                </div>
+                <div class="insight-card">
+                    <div class="insight-title">Flow Designer Demand</div>
+                    <div class="insight-text">Flow Designer skills are mentioned in 52% of mid-level positions, showing the shift toward low-code automation solutions in ServiceNow implementations.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p class="data-note">
+                Proof-of-concept prototype with simulated data demonstrating market analysis framework. 
+                Production version would integrate with live job site APIs for real-time insights.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Skills demand chart
+        const skillsCtx = document.getElementById('skillsChart').getContext('2d');
+        const skillsChart = new Chart(skillsCtx, {
+            type: 'bar',
+            data: {
+                labels: ['CSA', 'HRSD', 'ITSM', 'CIS', 'Integration Hub', 'Flow Designer', 'App Engine', 'Discovery', 'GRC', 'ITOM', 'SecOps', 'Customer Service', 'Field Service', 'Portal', 'Scripting'],
+                datasets: [{
+                    label: 'Job Mentions',
+                    data: [2234, 1567, 1398, 1245, 987, 892, 678, 567, 456, 398, 345, 289, 234, 198, 156],
+                    backgroundColor: [
+                        '#1B3A4B', '#2A4957', '#395863', '#48676F', '#57767B',
+                        '#81D742', '#8EDE52', '#9BE562', '#A8EC72', '#B5F382',
+                        '#0F2834', '#1F3640', '#2F444C', '#3F5258', '#4F6064'
+                    ],
+                    borderRadius: 8,
+                    borderSkipped: false,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(0,0,0,0.05)'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+
+        // Trends chart
+        const trendsCtx = document.getElementById('trendsChart').getContext('2d');
+        const trendsChart = new Chart(trendsCtx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug'],
+                datasets: [
+                    {
+                        label: 'CSA',
+                        data: [1890, 1920, 2050, 2100, 2150, 2180, 2200, 2234],
+                        borderColor: '#1B3A4B',
+                        backgroundColor: 'rgba(27, 58, 75, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    },
+                    {
+                        label: 'HRSD',
+                        data: [890, 920, 1050, 1200, 1350, 1450, 1500, 1567],
+                        borderColor: '#81D742',
+                        backgroundColor: 'rgba(129, 215, 66, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    },
+                    {
+                        label: 'Integration Hub',
+                        data: [456, 489, 523, 578, 634, 712, 856, 987],
+                        borderColor: '#81D742',
+                        backgroundColor: 'rgba(129, 215, 66, 0.15)',
+                        tension: 0.4,
+                        fill: true
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top'
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(0,0,0,0.05)'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
