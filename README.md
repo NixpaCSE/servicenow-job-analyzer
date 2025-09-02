@@ -1,2 +1,3 @@
 # servicenow-job-analyzer
-Website to analyze which ServiceNow skills are most in demand (proof of concept)
+View Project on my Portfolio Website: 
+https://nixpacse.github.io/#projects
